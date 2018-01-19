@@ -61,6 +61,7 @@ var InsertStudentForm = function () {
         insertStudentForm.append(createObaveznaPoljaObavjest());
         insertStudentForm.append(createVozackiFieldset());
         insertStudentForm.append(createSkulaFieldset());
+        insertStudentForm.append(createRadnoIskustvoFieldset());
     };
 
     var createNewStudentForm = function () {
@@ -178,7 +179,7 @@ var InsertStudentForm = function () {
             id: "vozacki"
         });
 
-        fieldset.append($("<legend>").append("Vozačka dozvola"));
+        fieldset.append($("<legend>").append("<br/>Vozačka dozvola"));
 
 
         fieldset.append("Am: ");
@@ -298,7 +299,7 @@ var InsertStudentForm = function () {
             id: "skula"
         });
 
-        fieldset.append($("<legend>").append("Obrazovanje"));
+        fieldset.append($("<legend>").append("<br/>Obrazovanje"));
         fieldset.append($("<div>", {
             name: "obrazovanja",
             id: "obrazovanja"
@@ -394,21 +395,39 @@ var InsertStudentForm = function () {
                             id: id
                         });
 
+                        var lapisButun = $("<button>", {
+                            class: "ui-button ui-widget ui-corner-all ui-button-icon-only",
+                            title: "Uredi"
+                        }).append($("<span>", {
+                            class: "ui-icon ui-icon-pencil"
+                        }));
+
+                        lapisButun.click(function (event) {
+                            // IMPLEMENT EDIT
+
+                            return false;
+                        });
+
                         var smeceButun = $("<button>", {
-                            class: "ui-button ui-widget ui-corner-all ui-button-icon-only"
+                            class: "ui-button ui-widget ui-corner-all ui-button-icon-only",
+                            title: "Briši"
                         }).append($("<span>", {
                             class: "ui-icon ui-icon-trash"
                         }));
 
                         smeceButun.click(function (event) {
                             // IMPLEMENT DELETE
-                            
+
                             return false;
                         });
 
-                        obrazovanje.append($("<h3>").append(odkad[0].value + " - " + dokad[0].value).append(smeceButun));
+                        var naslov = $("<h3>").append(odkad[0].value + " - " + dokad[0].value + " ");
+                        naslov.append(lapisButun);
+                        naslov.append(smeceButun);
+
+                        obrazovanje.append(naslov);
                         obrazovanje.append($("<h5>").append("<b>Zvanje: </b>" + zvanje[0].value));
-                        obrazovanje.append($("<h5>").append("<b>Ime obrazovne ustanove: </b>" + imeSkule[0].value));                        
+                        obrazovanje.append($("<h5>").append("<b>Ime obrazovne ustanove: </b>" + imeSkule[0].value));
                         obrazovanje.append("<br/>");
 
                         $(this).dialog("close");
@@ -419,24 +438,24 @@ var InsertStudentForm = function () {
 
 
     };
-    
+
     var createRadnoIskustvoFieldset = function () {
         var me = this;
 
         var fieldset = $("<fieldset>", {
             name: "iskustvo",
-            id: "skula"
+            id: "iskustvo"
         });
 
-        fieldset.append($("<legend>").append("Obrazovanje"));
+        fieldset.append($("<legend>").append("<br/>Radno iskustvo"));
         fieldset.append($("<div>", {
-            name: "obrazovanja",
-            id: "obrazovanja"
+            name: "radnoIskustvo",
+            id: "radnoIskustvo"
         }));
-        var skola = $("<button>").append("Dodaj obrazovanje");
+        var iskustvo = $("<button>").append("Dodaj radno iskustvo");
 
-        fieldset.append(skola.click(function (event) {
-            me.createObrazovanjeForm();
+        fieldset.append(iskustvo.click(function (event) {
+            me.createRadnoIskustvoForm();
 
             return false;
         }));
@@ -475,7 +494,7 @@ var InsertStudentForm = function () {
             title: "Unesite zaposlenje..."
         });
 
-        var imeSkule = $("<input>", {
+        var poslodavac = $("<input>", {
             type: "text",
             name: "poslodavac",
             id: "poslodavac",
@@ -502,7 +521,7 @@ var InsertStudentForm = function () {
         iskustvoForm.append($("<label>", {
             for : "poslodavac"
         }).append("Poslodavac"));
-        iskustvoForm.append(imeSkule);
+        iskustvoForm.append(poslodavac);
 
         iskustvoForm.dialog({
             modal: true,
@@ -510,8 +529,57 @@ var InsertStudentForm = function () {
             buttons: [{
                     text: "Dodaj",
                     click: function () {
+                        // VALIDATE FORM!
+                        var id = jQuery.now();
+                        radnaIskustva.push({
+                            id: id,
+                            odkad: odkad[0].value,
+                            dokad: dokad[0].value,
+                            zvanje: zvanje[0].value,
+                            poslodavac: poslodavac[0].value
+                        });
+
+                        var iskustvoDiv = $("<div>", {
+                            id: id
+                        });
+
+                        var lapisButun = $("<button>", {
+                            class: "ui-button ui-widget ui-corner-all ui-button-icon-only",
+                            title: "Uredi"
+                        }).append($("<span>", {
+                            class: "ui-icon ui-icon-pencil"
+                        }));
+
+                        lapisButun.click(function (event) {
+                            // IMPLEMENT EDIT
+
+                            return false;
+                        });
+
+                        var smeceButun = $("<button>", {
+                            class: "ui-button ui-widget ui-corner-all ui-button-icon-only",
+                            title: "Briši"
+                        }).append($("<span>", {
+                            class: "ui-icon ui-icon-trash"
+                        }));
+
+                        smeceButun.click(function (event) {
+                            // IMPLEMENT DELETE
+
+                            return false;
+                        });
+
+                        var naslov = $("<h3>").append(odkad[0].value + " - " + dokad[0].value + " ");
+                        naslov.append(lapisButun);
+                        naslov.append(smeceButun);
+
+                        iskustvoDiv.append(naslov);
+                        iskustvoDiv.append($("<h5>").append("<b>Zvanje: </b>" + zvanje[0].value));
+                        iskustvoDiv.append($("<h5>").append("<b>Poslodavac: </b>" + poslodavac[0].value));
+                        iskustvoDiv.append("<br/>");
+
                         $(this).dialog("close");
-                        $("#radnoIskustvo").append("<h5>radno iskustvo dodano...</h5>");
+                        $("#radnoIskustvo").append(iskustvoDiv);
                     }
                 }]
         });
@@ -519,6 +587,10 @@ var InsertStudentForm = function () {
 
     };
 
+    var createPohraniButun = function () {
+        var pohraniButun = $("<button>", {});
+    };
+    
     this.getForm = function () {
         return insertStudentForm;
     };
