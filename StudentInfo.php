@@ -6,7 +6,8 @@ include 'index.html';
 $query = "  select  maticni_broj,
                     ime,
                     prezime,
-                    tel,
+                    rojendan,
+                    telefon,
                     email
             from    studenti";
 
@@ -19,6 +20,7 @@ if($response){
                     <th align="left"><b>Matični broj</b></td>
                     <th align="left"><b>Ime</b></td>
                     <th align="left"><b>Prezime</b></td>
+                    <th align="left"><b>Datum rođenja</b></td>
                     <th align="left"><b>Telefon</b></td>
                     <th align="left"><b>E-mail</b></td>
                 </tr>
@@ -29,7 +31,8 @@ if($response){
                 '<td align="left">' . $row['maticni_broj'] . '</td>' .
                 '<td align="left">' . $row['ime'] . '</td>' .
                 '<td align="left">' . $row['prezime'] . '</td>' .
-                '<td align="left">' . $row['tel'] . '</td>' .
+                '<td align="left">' . $row['rojendan'] . '</td>' .
+                '<td align="left">' . $row['telefon'] . '</td>' .
                 '<td align="left">' . $row['email'] . '</td>' .
             '</tr>';
     }
