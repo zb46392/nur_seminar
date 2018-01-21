@@ -1,39 +1,11 @@
 $(document).ready(function () {
 
-    var insertStudentForm = new InsertStudentForm();
-    var pohraniButun = $("<button>", {
-        class: "btn btn-primary"
-    }).append("Pohrani");
-
-    pohraniButun.click(function () {
-        jQuery.post("../DodajStudent.php", insertStudentForm.getData(), function (data, textStatus, jhXHR) {
-
-            var poruka = $("<form>").append(data.message);
-            poruka.dialog({
-                modal: true,
-                closeText: "Zatvori",
-                buttons: [{
-                        text: "OK",
-                        click: function () {
-                            $(this).dialog("close");
-                        }
-                    }
-                ]
-            });
-
-            poruka.dialog("open");
-        }, "json");
-
-
-        return false;
-    });
-    insertStudentForm.getForm().append(pohraniButun);
-
     $("#liDodajStudent").click(function () {
+        var insertStudentForm = new InsertStudentForm();
         $(".container").empty();
         $(".container").addClass("jumbotron");
         $(".container").append(insertStudentForm.getForm());
-//        $("#noviStudent").scrollTop();
+        $("#noviStudent").scrollTop();
     });
 
 });
@@ -62,6 +34,7 @@ var InsertStudentForm = function () {
         insertStudentForm.append(createVozackiFieldset());
         insertStudentForm.append(createSkulaFieldset());
         insertStudentForm.append(createRadnoIskustvoFieldset());
+        insertStudentForm.append(createPohraniButun());
     };
     var createNewStudentForm = function () {
         return $("<form>",
@@ -164,11 +137,11 @@ var InsertStudentForm = function () {
             id: "vozacki"
         });
         fieldset.append($("<legend>").append("<br/>Vozačka dozvola"));
-        fieldset.append("Am: ");
+        fieldset.append("AM: ");
         fieldset.append($("<input>", {
             type: "checkbox",
             name: "vozacki",
-            value: "Am"
+            value: "AM"
         }));
         fieldset.append(" A1: ");
         fieldset.append($("<input>", {
@@ -500,17 +473,53 @@ var InsertStudentForm = function () {
         });
     };
 
+    var createPohraniButun = function () {
+        var pohraniButun = $("<button>", {
+            class: "btn btn-primary"
+        }).append("Pohrani");
+
+        pohraniButun.click(function () {
+            // VALIDATE FORM
+            var success;
+            jQuery.post("../DodajStudent.php", getData(), function (data, textStatus, jhXHR) {
+                success = data.success;
+                var poruka = $("<form>").append(data.message);
+                poruka.dialog({
+                    modal: true,
+                    closeText: "Zatvori",
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                if(success){
+                                    $(".container").empty();
+                                    $(".container").removeClass("jumbotron");
+                                }
+                                $(this).dialog("close");
+                            }
+                        }
+                    ]
+                });
+
+                poruka.dialog("open");
+            }, "json");
+            
+            return false;
+        });
+
+        return pohraniButun;
+    };
+
     this.getForm = function () {
         return insertStudentForm;
     };
-    this.getData = function () {        
-        var vozacke =[];
-        
-        $("input:checkbox:checked").each(function(){
+    var getData = function () {
+        var vozacke = [];
+
+        $("input:checkbox:checked").each(function () {
             vozacke.push($(this).val());
         });
-        
-        
+
+
         return {
             maticni_broj: $("#maticni_broj").val(),
             ime: $("#ime").val(),

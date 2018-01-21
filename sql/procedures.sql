@@ -55,21 +55,21 @@ CREATE PROCEDURE insert_radno_iskustvo(
                                     odkad DATE,
                                     dokad DATE,
                                     zvanje VARCHAR(60),
-                                    zaposlenik VARCHAR(45),
+                                    poslodavac VARCHAR(45),
                                     mb_studenta INT
                                     )
     MODIFIES SQL DATA
     BEGIN
-    INSERT INTO skolovanja( odkad, 
+    INSERT INTO radna_iskustva( odkad, 
                             dokad,
                             zvanje,
-                            zaposlenik,
+                            poslodavac,
                             mb_studenta
                             )
     VALUES              (   odkad,
                             dokad,
                             zvanje,
-                            zaposlenik,
+                            poslodavac,
                             mb_studenta
                         );
     END;

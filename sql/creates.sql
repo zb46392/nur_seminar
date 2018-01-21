@@ -59,7 +59,7 @@ CREATE TABLE studenti_drzavljanstva(
 );
 
 CREATE TABLE skolovanja(
-    id          INT NOT NULL,
+    id          INT NOT NULL AUTO_INCREMENT,
     odkad       DATE NOT NULL,
     dokad       DATE NOT NULL,
     zvanje      VARCHAR(60),
@@ -71,11 +71,11 @@ CREATE TABLE skolovanja(
 );
 
 CREATE TABLE radna_iskustva(
-    id          INT NOT NULL,
+    id          INT NOT NULL AUTO_INCREMENT,
     odkad       DATE NOT NULL,
     dokad       DATE NOT NULL,
     zvanje      VARCHAR(30),
-    zaposlenik  VARCHAR(45),
+    poslodavac  VARCHAR(45),
     mb_studenta INT NOT NULL,
 
     PRIMARY KEY (id),
