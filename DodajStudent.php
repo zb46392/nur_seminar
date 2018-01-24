@@ -158,7 +158,7 @@ function insertSkolovanja($dbc){
               b Blobs
               s Everything else
              */
-            mysqli_stmt_bind_param($stmt, "ssssi", $skolovanje["odkad"], $skolovanje["dokad"], $skolovanje["zvanje"], $skolovanje["ime_skole"], $_POST["maticni_broj"]);
+            mysqli_stmt_bind_param($stmt, "ssssi", $skolovanje["odkad"], $skolovanje["dokad"], $skolovanje["zvanje"], $skolovanje["imeSkule"], $_POST["maticni_broj"]);
 
             mysqli_stmt_execute($stmt);
 
