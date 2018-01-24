@@ -27,6 +27,7 @@ if (empty($dataMissing)) {
         insertStudent($dbc);
         insertVozacku($dbc);
         insertRadnoIskustvo($dbc);
+        insertSkolovanja($dbc);
         $message .= "Student je pohranjen";
         $success = true;
     } catch (Exception $exc) {
@@ -72,7 +73,7 @@ function insertStudent($dbc) {
 }
 
 function insertVozacku($dbc) {
-    if (filter_input(INPUT_POST, "vozacka")) {
+    if (isset($_POST["vozacka"])) {
         $query = "call insert_vozacku_dozvolu(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $vozacka = array("AM" => 0, "A1" => 0, "A2" => 0, "A" => 0, "B1" => 0, "B" => 0, "BE" => 0,
             "C" => 0, "C1" => 0, "C1E" => 0, "CE" => 0, "D1" => 0, "D1E" => 0, "DE" => 0, "D" => 0);
@@ -109,7 +110,7 @@ function insertVozacku($dbc) {
 }
 
 function insertRadnoIskustvo($dbc) {
-    if(filter_input(INPUT_POST, "radnaIskustva")) {
+    if(isset($_POST["radnaIskustva"])) {
         $radnaIskustva = $_POST["radnaIskustva"];
 
         array_walk($radnaIskustva, function($iskustvo) use($dbc) {
@@ -123,6 +124,41 @@ function insertRadnoIskustvo($dbc) {
               s Everything else
              */
             mysqli_stmt_bind_param($stmt, "ssssi", $iskustvo["odkad"], $iskustvo["dokad"], $iskustvo["zvanje"], $iskustvo["poslodavac"], $_POST["maticni_broj"]);
+
+            mysqli_stmt_execute($stmt);
+
+
+            $affectedRows = mysqli_stmt_affected_rows($stmt);
+
+
+            if ($affectedRows != 1) {
+                $error = 'Došlo je do greške: ' . mysqli_error($dbc);
+                mysqli_stmt_close($stmt);
+                throw new Exception($error);
+            }
+
+            mysqli_stmt_close($stmt);
+        });
+    }
+
+    return true;
+}
+
+function insertSkolovanja($dbc){
+    if(isset($_POST["obrazovanja"])){
+        $skolovanja = $_POST["obrazovanja"];
+
+        array_walk($skolovanja, function($skolovanje) use($dbc) {
+            $query = "call insert_skolovanje(?,?,?,?,?)";
+            $stmt = mysqli_prepare($dbc, $query);
+
+            /*
+              i Integer
+              d Doubles
+              b Blobs
+              s Everything else
+             */
+            mysqli_stmt_bind_param($stmt, "ssssi", $skolovanje["odkad"], $skolovanje["dokad"], $skolovanje["zvanje"], $skolovanje["ime_skole"], $_POST["maticni_broj"]);
 
             mysqli_stmt_execute($stmt);
 

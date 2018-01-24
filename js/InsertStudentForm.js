@@ -89,7 +89,7 @@ var InsertStudentForm = function () {
     var createRojendanLabel = function () {
         return $("<label>", {
             for : "rojendan"
-        }).append("Rođendan");
+        }).append("Datum rođenja");
     };
     var createRojendanInput = function () {
         return $("<input>", {

@@ -9,3 +9,7 @@
 .panel-footer > h4 > span{
     width:100%;
 }
+
+.student:hover{
+    cursor: pointer;
+}
